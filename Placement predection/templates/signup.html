@@ -1,0 +1,581 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Sign-up</title>
+    <link rel="icon" href="img/m.png">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #06bbcc;
+            color: #fff;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 50%;
+            max-width: 1200px;
+            height: 80%;
+            background: #000;
+            border-radius: 20px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.5);
+            animation: scaleIn 0.5s ease-in-out;
+            transition: scaleIn 1s ease;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+
+            to {
+                transform: scale(1.1);
+            }
+        }
+
+        .panel {
+            flex: 1;
+            height: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            background-color: rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .input-container {
+            position: relative;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 5%;
+            border: none;
+            border-radius: 5px;
+            background-color: rgba(43, 43, 43, 0.784);
+            color: #fff;
+            border-bottom: 2px solid transparent;
+            outline: none;
+            font-size: 16px;
+            transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s, border 0.3s, color 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="password"]:focus {
+            border-bottom: 2px solid #00e5ff;
+            box-shadow: 0 0 10px #00e5ffb0;
+        }
+
+        .input-label {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            pointer-events: none;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 16px;
+            transform: translateY(-80%);
+            transition: transform 0.3s, font-size 0.3s, color 0.3s;
+        }
+
+
+        input:focus+.input-label {
+            top: 5px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+
+        .input-container::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.637);
+            transform: scaleX(0);
+            transform-origin: center right;
+            transition: transform 0.3s ease;
+        }
+
+        input:focus {
+            background-color: rgba(44, 44, 44, 0.855);
+        }
+
+
+        .l-button {
+            padding: 12px 25px;
+            background-color: transparent;
+            color: #bfbfbf;
+            border-color: #bfbfbf;
+            border: 2px solid #bfbfbf;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.2s;
+            transform-origin: center;
+            outline: none;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .s-button {
+            padding: 12px 25px;
+            background-color: transparent;
+            color: #06bbcc;
+            border-color: #06bbcc;
+            border: 2px solid #06bbcc;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s, transform 0.2s;
+            transform-origin: center;
+            outline: none;
+            margin-top: 15px;
+            text-align: center;
+        }
+
+        .l-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #bfbfbf;
+        }
+
+        .s-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px #06bbcc;
+
+        }
+
+
+        h1 {
+            position: relative;
+            font-size: 28px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+
+        .login-panel {
+            background: url(data:image/jpeg;base64,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);
+            background-position-x: 42%;
+            transform: translateX(0%);
+        }
+
+        .login-panel h1 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        .signup-panel {
+            background: url(img/bdesign.jpeg);
+            transform: translateX(100%);
+            position: static;
+        }
+
+        .signup-panel h1 {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        .overlay {
+            position: absolute;
+            width: 50%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.250);
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 20px;
+            color: #fff;
+            font-size: 18px;
+            transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            background-image: url('https://th.bing.com/th/id/R.515a3bdcb027023968d2f155f1764d11?rik=xS%2bGh4%2fq0bLO0Q&riu=http%3a%2f%2fimages.techhive.com%2fimages%2farticle%2f2015%2f08%2fstudent-with-an-ipad-itunes-u-100609219-orig.jpg&ehk=isHbjyd3tOfrCM99lhFxG7g6fDi2ze8rj7I8XDstsZc%3d&risl=&pid=ImgRaw&r=0');
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+        }
+
+        .overlay::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.250);
+            z-index: -1;
+        }
+
+        .l-social-icons,
+        .s-social-icons {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .l-social-icons a,
+        .s-social-icons a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            position: relative;
+            transition: transform 0.3s;
+        }
+
+        .l-social-icons a::before {
+            content: attr(data-title);
+            position: absolute;
+            background: #2c2c2c;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+        .l-social-icons a:hover::before,
+        .s-social-icons a:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .s-social-icons a::before {
+            content: attr(data-title);
+            position: absolute;
+            background: #00e5ff;
+            font-weight: bold;
+            color: #fff;
+            font-size: 12px;
+            padding: 2px 5px;
+            border-radius: 3px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(5px);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+
+
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .panel:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 20px 40px rgba(0, 0, 0, 0.6);
+        }
+
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .panel {
+            animation: fadeInSlideUp 0.5s ease forwards;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="panel login-panel">
+            <h1 style="margin-bottom: 30px; color: #bfbfbf;">Login</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-container">
+                    <input type="text" name="uname" required id="username">
+                    <label class="input-label" for="username" style="color: #ffffffbb;">Username</label>
+                </div>
+                <div class="input-container">
+                    <input type="password" name="psw" required id="password">
+                    <label class="input-label" for="password" style="color: #ffffffbb;">Password</label>
+                </div>
+                <button type="submit" class="l-button" id="l-button">Login</button>
+            </form>
+            <div id="errorMessage" style="color: #00e5ff;"></div>
+
+            <div class="l-social-icons">
+                <a href="#" data-title="Facebook" aria-label="Facebook"><i class="fab fa-facebook-f"
+                        style="color: #bfbfbf;"></i></a>
+                <a href="#" data-title="Twitter" aria-label="Twitter"><i class="fab fa-twitter"
+                        style="color: #bfbfbf;"></i></a>
+                <a href="#" data-title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"
+                        style="color: #bfbfbf;"></i></a>
+            </div>
+        </div>
+
+
+        <div class="overlay" onclick="togglePanel()">
+            <div>
+                <h2 style="line-height: 2.5rem; text-align: center;">Tap to Switch</h2>
+                <p>Click here to sign up for an account.</p>
+            </div>
+            <div>
+                <h2>Follow Us</h2>
+                <div class="l-social-icons" style="margin-bottom: 15px; ">
+                    <a href="#" data-title="Facebook" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" data-title="Twitter" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" data-title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="panel signup-panel">
+            <h1 style="margin-bottom: 30px; color: #06bbcc;">Sign Up</h1>
+            <form method="post">
+                {% csrf_token %}
+                <div class="input-container">
+                    <input type="text" name="uname" required id="fullname">
+                    <label class="input-label" for="fullname" style="color: #06bbcc;">User Name</label>
+                </div>
+                <div class="input-container">
+                    <input type="email" name="email" required id="email">
+                    <label class="input-label" for="email" style="color: #06bbcc;">Email</label>
+                </div>
+                <div class="input-container">
+                    <input type="password" name="psw" required id="signup-password">
+                    <label class="input-label" for="signup-password" style="color: #06bbcc;">Password</label>
+                </div>
+                <div class="input-container">
+                    <input type="password" name="psw-repeat" required id="signup-password">
+                    <label class="input-label" for="signup-password" style="color: #06bbcc;">Confirm Password</label>
+                </div>
+                <button type="submit" class="s-button" id="s-button">Sign Up</button>
+            </form>
+            <div id="errorMsg" style="color: #00e5ff;"></div>
+
+            <div class="s-social-icons">
+                <a href="#" data-title="Facebook" aria-label="Facebook"><i class="fab fa-facebook-f"
+                        style="color: #06bbcc;"></i></a>
+                <a href="#" data-title="Twitter" aria-label="Twitter"><i class="fab fa-twitter"
+                        style="color: #06bbcc;"></i></a>
+                <a href="#" data-title="Instagram" aria-label="Instagram"><i class="fab fa-instagram"
+                        style="color: #06bbcc;"></i></a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Particle Animation -->
+    <div id="particles-js"></div>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: {
+                    value: 80,
+                    density: {
+                        enable: true,
+                        value_area: 900
+                    }
+                },
+                color: {
+                    value: '#ffffff'
+                },
+                shape: {
+                    type: 'circle',
+                    stroke: {
+                        width: 0,
+                        color: '#000000'
+                    },
+                    polygon: {
+                        nb_sides: 5
+                    },
+                    image: {
+                        src: 'img/github.svg',
+                        width: 100,
+                        height: 100
+                    }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: {
+                        enable: false,
+                        speed: 1,
+                        opacity_min: 0.1,
+                        sync: false
+                    }
+                },
+                size: {
+                    value: 5,
+                    random: true,
+                    anim: {
+                        enable: false,
+                        speed: 40,
+                        size_min: 0.1,
+                        sync: false
+                    }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 170,
+                    color: '#ffffff',
+                    opacity: 0.4,
+                    width: 2
+                },
+                move: {
+                    enable: true,
+                    speed: 6,
+                    direction: 'none',
+                    random: false,
+                    straight: false,
+                    out_mode: 'out',
+                    bounce: false,
+                    attract: {
+                        enable: false,
+                        rotateX: 600,
+                        rotateY: 1200
+                    }
+                }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: {
+                    onhover: {
+                        enable: true,
+                        mode: 'grab'
+                    },
+                    onclick: {
+                        enable: true,
+                        mode: 'push'
+                    },
+                    resize: true
+                },
+                modes: {
+                    grab: {
+                        distance: 140,
+                        line_linked: {
+                            opacity: 1
+                        }
+                    },
+                    bubble: {
+                        distance: 400,
+                        size: 40,
+                        duration: 2,
+                        opacity: 8,
+                        speed: 3
+                    },
+                    repulse: {
+                        distance: 200,
+                        duration: 0.4
+                    },
+                    push: {
+                        particles_nb: 4
+                    },
+                    remove: {
+                        particles_nb: 2
+                    }
+                }
+            },
+            retina_detect: true
+        });
+    </script>
+    <!-- End Particle Animation Script -->
+
+    <script>
+        const container = document.querySelector('.container');
+        const loginPanel = document.querySelector('.login-panel');
+        const signupPanel = document.querySelector('.signup-panel');
+        const overlay = document.querySelector('.overlay');
+        let isLoginVisible = true;
+
+        function togglePanel() {
+            if (isLoginVisible) {
+                loginPanel.style.transform = 'translateX(100%)';
+                signupPanel.style.transform = 'translateX(0%)';
+                overlay.style.transform = 'translateX(0%)';
+                isLoginVisible = false;
+            } else {
+                loginPanel.style.transform = 'translateX(0%)';
+                signupPanel.style.transform = 'translateX(100%)';
+                overlay.style.transform = 'translateX(100%)';
+                isLoginVisible = true;
+            }
+        }
+    </script>
+
+    <script>
+        const inputs = container.querySelectorAll('input');
+
+        inputs.forEach(input => {
+            const label = input.nextElementSibling;
+
+            input.addEventListener('focus', () => {
+                label.style.display = 'none';
+            });
+
+            input.addEventListener('blur', () => {
+                if (!input.value) {
+                    label.style.display = 'block';
+                }
+            });
+        });
+    </script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+</body>
+
+</html>
